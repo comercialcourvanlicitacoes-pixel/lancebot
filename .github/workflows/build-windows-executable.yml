@@ -1,0 +1,37 @@
+name: Build Windows executable
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-windows:
+    name: Build LanceBot.exe
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-build.txt
+
+      - name: Build executable
+        run: python scripts/build_executable.py --install-playwright-browser --console
+
+      - name: Upload executable artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: LanceBot-Windows
+          path: dist/LanceBot/
+          if-no-files-found: error
