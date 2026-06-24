@@ -26,18 +26,22 @@ jobs:
         run: |
           python -m pip install --upgrade pip
 
+          $runtimeInstalled = $false
+
           if (Test-Path requirements.txt) {
             python -m pip install -r requirements.txt
-          } else {
-            python -m pip install playwright==1.40.0
+            if ($LASTEXITCODE -eq 0) {
+              $runtimeInstalled = $true
+            } else {
+              Write-Warning "requirements.txt failed; installing pinned runtime dependencies directly."
+            }
           }
 
-          if (Test-Path requirements-build.txt) {
-            python -m pip install -r requirements-build.txt
-          } else {
-            python -m pip install pyinstaller==6.11.1
+          if (-not $runtimeInstalled) {
+            python -m pip install playwright==1.40.0 pytest==7.4.3 pytest-cov==4.1.0
           }
 
+          python -m pip install pyinstaller==6.11.1
           python -c "import playwright; import PyInstaller; print('Build dependencies OK')"
 
       - name: Build executable
