@@ -152,6 +152,21 @@ Este projeto é de código aberto sob a licença **MIT**.
 
 ---
 
+## 📦 Gerar executável para cliente
+
+Para entregar o LanceBot sem exigir Python instalado no computador do cliente, use o guia de build com PyInstaller:
+
+```bash
+python -m pip install -r requirements-build.txt
+python scripts/build_executable.py --install-playwright-browser --console
+```
+
+O modo recomendado gera a pasta `dist/LanceBot/`. No Windows, entregue a pasta inteira ao cliente, mantendo `LanceBot.exe`, `_internal/` e um `LOGIN.env` real ao lado do executável.
+
+Veja o passo a passo completo em [`docs/BUILD_EXECUTABLE.md`](docs/BUILD_EXECUTABLE.md).
+
+
+
 ## 📖 Configuração do Ambiente de Desenvolvimento
 
 Consulte nosso [guia de desenvolvimento](docs/DEVELOPMENT.md) para configurar o ambiente e começar a contribuir.
